@@ -180,7 +180,7 @@ const LayHeader = defineComponent({
       ]"
     >
       <div v-if="set.fixedHeader">
-        <LayHeader />
+        <!-- <LayHeader /> -->
         <!-- 主体内容 -->
         <LayContent :fixed-header="set.fixedHeader" />
       </div>
@@ -191,13 +191,13 @@ const LayHeader = defineComponent({
         >
           <BackTopIcon />
         </el-backtop>
-        <LayHeader />
+        <!-- <LayHeader /> -->
         <!-- 主体内容 -->
         <LayContent :fixed-header="set.fixedHeader" />
       </el-scrollbar>
     </div>
     <!-- 系统设置 -->
-    <LaySetting />
+    <!-- <LaySetting /> -->
   </div>
 </template>
 

@@ -106,10 +106,7 @@ const transitionMain = defineComponent({
 </script>
 
 <template>
-  <section
-    :class="[fixedHeader ? 'app-main' : 'app-main-nofixed-header']"
-    :style="getSectionStyle"
-  >
+  <section :class="[fixedHeader ? 'app-main' : 'app-main-nofixed-header']">
     <router-view>
       <template #default="{ Component, route }">
         <LayFrame :currComp="Component" :currRoute="route">
