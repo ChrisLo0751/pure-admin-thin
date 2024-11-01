@@ -10,8 +10,9 @@ import { useUserStoreHook } from "@/store/modules/user";
 import { initRouter, getTopMenu } from "@/router/utils";
 import { bg, avatar, illustration } from "./utils/static";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
+import { ref, reactive, toRaw, onMounted, watch, onBeforeUnmount } from "vue";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
+import { ReImageVerify } from "@/components/ReImageVerify";
 
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
@@ -24,6 +25,8 @@ defineOptions({
 const router = useRouter();
 const loading = ref(false);
 const ruleFormRef = ref<FormInstance>();
+const imgCode = ref("");
+const isGoogle = ref(false);
 
 const { initStorage } = useLayout();
 initStorage();
@@ -34,7 +37,8 @@ const { title } = useNav();
 
 const ruleForm = reactive({
   username: "admin",
-  password: "admin123"
+  password: "admin123",
+  verifyCode: ""
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
@@ -75,6 +79,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.document.removeEventListener("keypress", onkeypress);
 });
+
+watch(imgCode, value => {
+  useUserStoreHook().SET_VERIFYCODE(value);
+});
 </script>
 
 <template>
@@ -102,6 +110,7 @@ onBeforeUnmount(() => {
           </Motion>
 
           <el-form
+            v-if="!isGoogle"
             ref="ruleFormRef"
             :model="ruleForm"
             :rules="loginRules"
@@ -137,6 +146,52 @@ onBeforeUnmount(() => {
                   :prefix-icon="useRenderIcon(Lock)"
                 />
               </el-form-item>
+            </Motion>
+
+            <Motion :delay="200">
+              <el-form-item prop="verifyCode">
+                <el-input
+                  v-model="ruleForm.verifyCode"
+                  clearable
+                  placeholder="验证码"
+                  :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"
+                >
+                  <template v-slot:append>
+                    <ReImageVerify v-model:code="imgCode" />
+                  </template>
+                </el-input>
+              </el-form-item>
+            </Motion>
+
+            <Motion :delay="250">
+              <el-button
+                class="w-full mt-4"
+                size="default"
+                type="primary"
+                :loading="loading"
+                @click="onLogin(ruleFormRef)"
+              >
+                下一步
+              </el-button>
+            </Motion>
+          </el-form>
+          <el-form
+            v-else
+            ref="ruleFormRef"
+            :model="ruleForm"
+            :rules="loginRules"
+            size="large"
+          >
+            <Motion :delay="250">
+              <el-button
+                class="w-full mt-4"
+                size="default"
+                type="primary"
+                :loading="loading"
+                @click="onLogin(ruleFormRef)"
+              >
+                下一步
+              </el-button>
             </Motion>
 
             <Motion :delay="250">

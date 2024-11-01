@@ -56,6 +56,10 @@ export const useUserStore = defineStore({
     SET_PERMS(permissions: Array<string>) {
       this.permissions = permissions;
     },
+    /** 存储前端生成的验证码 */
+    SET_VERIFYCODE(verifyCode: string) {
+      this.verifyCode = verifyCode;
+    },
     /** 存储是否勾选了登录页的免登录 */
     SET_ISREMEMBERED(bool: boolean) {
       this.isRemembered = bool;
