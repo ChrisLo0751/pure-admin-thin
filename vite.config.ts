@@ -23,8 +23,15 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       // 端口号
       port: VITE_PORT,
       host: "0.0.0.0",
-      // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
-      proxy: {},
+      // 本地跨域代理
+      proxy: {
+        "/api/v1": {
+          // target: 'https://customer-client-api.ycsoftwares.com',
+          target: "http://127.0.0.1:8889",
+          changeOrigin: true, // Changes the origin of the host header to the target URL
+          rewrite: path => path.replace(/^\/api\/v1/, "/api/v1") // Optional: rewrite path if needed
+        }
+      },
       // 预热文件以提前转换和缓存结果，降低启动期间的初始页面加载时长并防止转换瀑布
       warmup: {
         clientFiles: ["./index.html", "./src/{views,components}/*"]

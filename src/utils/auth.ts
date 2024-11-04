@@ -6,9 +6,9 @@ export interface DataInfo<T> {
   /** token */
   accessToken: string;
   /** `accessToken`的过期时间（时间戳） */
-  expires: T;
+  expires?: T;
   /** 用于调用刷新accessToken的接口时所需的token */
-  refreshToken: string;
+  refreshToken?: string;
   /** 头像 */
   avatar?: string;
   /** 用户名 */
