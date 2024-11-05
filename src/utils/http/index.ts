@@ -13,6 +13,8 @@ import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
+import { setToken } from "@/utils/auth";
+import { message } from "../message";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -132,6 +134,7 @@ class PureHttp {
           PureHttp.initConfig.beforeResponseCallback(response);
           return response.data;
         }
+
         return response.data;
       },
       (error: PureHttpError) => {
@@ -167,6 +170,17 @@ class PureHttp {
           resolve(response);
         })
         .catch(error => {
+          if (error.response.status === 401) {
+            console.log("token过期");
+            setToken({
+              accessToken: "",
+              username: "",
+              avatar: ""
+            });
+            localStorage.clear();
+            message && message("登录信息已过期，请重新登录");
+            window.location.reload();
+          }
           reject(error);
         });
     });
@@ -181,6 +195,15 @@ class PureHttp {
     return this.request<T>("post", url, params, config);
   }
 
+  /** 单独抽离的`put`工具函数 */
+  public put<T, P>(
+    url: string,
+    params?: AxiosRequestConfig<P>,
+    config?: PureHttpRequestConfig
+  ): Promise<T> {
+    return this.request<T>("put", url, params, config);
+  }
+
   /** 单独抽离的`get`工具函数 */
   public get<T, P>(
     url: string,
@@ -188,6 +211,15 @@ class PureHttp {
     config?: PureHttpRequestConfig
   ): Promise<T> {
     return this.request<T>("get", url, params, config);
+  }
+
+  /** 单独抽离的`delete`工具函数 */
+  public delete<T, P>(
+    url: string,
+    params?: AxiosRequestConfig<P>,
+    config?: PureHttpRequestConfig
+  ): Promise<T> {
+    return this.request<T>("delete", url, params, config);
   }
 }
 

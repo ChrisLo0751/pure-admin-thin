@@ -1,4 +1,14 @@
 import { http } from "@/utils/http";
+import type { Result } from "./common";
+
+const enum UserApi {
+  Login = "/api/v1/user/login",
+  RefreshToken = "/refresh-token",
+  Captcha = "/api/v1/graphic/code",
+  Logout = "/api/v1/user/logout",
+  BindGoogleCode = "/api/v1/user/bind_google_captcha",
+  GetGoogleCode = "/api/v1/user/login_first"
+}
 
 export type UserResult = {
   success: boolean;
@@ -38,21 +48,6 @@ export type CaptchaResult = {
   captcha_id: string;
   captcha_image: string;
 };
-
-export type Result<T> = {
-  code: number;
-  msg: string;
-  data?: T;
-};
-
-const enum UserApi {
-  Login = "/api/v1/user/login",
-  RefreshToken = "/refresh-token",
-  Captcha = "/api/v1/graphic/code",
-  Logout = "/api/v1/user/logout",
-  BindGoogleCode = "/api/v1/user/bind_google_captcha",
-  GetGoogleCode = "/api/v1/user/login_first"
-}
 
 export type GetLoginParams = {
   username: string; // 用户名/邮箱

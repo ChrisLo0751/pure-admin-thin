@@ -26,5 +26,24 @@ export default [
         component: () => import("@/layout/redirect.vue")
       }
     ]
+  },
+  {
+    path: "/test/:id",
+    component: Layout,
+    meta: {
+      title: "测试",
+      showLink: false,
+      rank: 103
+    },
+    children: [
+      {
+        path: "",
+        name: "Test",
+        component: () => import("@/views/test/index.vue"),
+        meta: {
+          title: "测试页面"
+        }
+      }
+    ]
   }
 ] satisfies Array<RouteConfigsTable>;

@@ -27,7 +27,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       proxy: {
         "/api/v1": {
           // target: 'https://customer-client-api.ycsoftwares.com',
-          target: "http://127.0.0.1:8889",
+          target: "http://127.0.0.1:8898",
           changeOrigin: true, // Changes the origin of the host header to the target URL
           rewrite: path => path.replace(/^\/api\/v1/, "/api/v1") // Optional: rewrite path if needed
         }
